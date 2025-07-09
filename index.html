@@ -6,12 +6,16 @@
     <title>Cosmic Discoveries - Space Facts & Science</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
     <style>
         :root {
             --primary: #6b46c1;
             --secondary: #0068ff;
             --dark: #1e293b;
             --light: #f8fafc;
+            --dark-bg: #0f172a;
+            --dark-text: #e2e8f0;
+            --dark-card: #1e293b;
         }
 
         * {
@@ -30,12 +34,60 @@
             color: var(--dark);
             line-height: 1.6;
             overflow-x: hidden;
-            transition: margin-left 0.3s ease;
+            transition: margin-left 0.3s ease, background-color 0.5s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
         }
 
         body.sidebar-open {
             margin-left: 250px;
             overflow: hidden;
+        }
+
+        /* Dark mode classes */
+        .dark-mode .navbar,
+        .dark-mode .mobile-menu {
+            background-color: var(--dark-card) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .dark-mode .hero-text h1,
+        .dark-mode .section-title h2,
+        .dark-mode .fact-card h3,
+        .dark-mode .testimonial-card p,
+        .dark-mode .category-btn,
+        .dark-mode .feature-card,
+        .dark-mode .testimonial-card,
+        .dark-mode .contact-form,
+        .dark-mode .nav-links a,
+        .dark-mode .mobile-menu a {
+            color: var(--dark-text) !important;
+        }
+
+        .dark-mode .feature-card,
+        .dark-mode .fact-card,
+        .dark-mode .testimonial-card,
+        .dark-mode .contact-form {
+            background-color: var(--dark-card) !important;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .dark-mode .btn-secondary {
+            border-color: var(--primary) !important;
+            color: var(--primary) !important;
+        }
+
+        /* Smooth Transitions */
+        .transition-all {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
         }
 
         /* Sidebar Styles */
@@ -152,10 +204,34 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .sidebar-toggle:hover {
+            background-color: #4338ca;
+            transform: scale(1.1);
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark-mode-toggle:hover {
             background-color: #4338ca;
             transform: scale(1.1);
         }
@@ -165,9 +241,10 @@
             background-color: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: fixed;
-            width: 250  px;
+            width: 100%;
             top: 0;
             z-index: 1000;
+            transition: all 0.5s ease;
         }
 
         .nav-container {
@@ -219,6 +296,11 @@
             position: relative;
             overflow: hidden;
         }
+        
+        .dark-mode .hero {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+        }
+
         .hero::before {
             content: '';
             position: absolute;
@@ -232,9 +314,9 @@
             animation: bgScroll 60s linear infinite;
         }
         @keyframes bgScroll {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(0.5deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
 
         .hero-content {
@@ -250,12 +332,14 @@
             font-size: 3rem;
             margin-bottom: 1.5rem;
             color: var(--dark);
+            transition: color 0.3s ease;
         }
 
         .hero-text p {
             font-size: 1.2rem;
             margin-bottom: 2rem;
             color: #64748b;
+            transition: color 0.3s ease;
         }
 
         .hero-image img {
@@ -263,6 +347,12 @@
             height: auto;
             border-radius: 1rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.7s ease, box-shadow 0.7s ease;
+        }
+
+        .hero-image:hover img {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
 
         .btn {
@@ -271,7 +361,7 @@
             border-radius: 0.5rem;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             border: none;
         }
@@ -284,7 +374,8 @@
 
         .btn-primary:hover {
             background-color: #4338ca;
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.3);
         }
 
         .btn-secondary {
@@ -295,7 +386,8 @@
 
         .btn-secondary:hover {
             background-color: rgba(79, 70, 229, 0.1);
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.2);
         }
 
         section {
@@ -314,12 +406,14 @@
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: var(--dark);
+            transition: color 0.3s ease;
         }
 
         .section-title p {
             color: #64748b;
             max-width: 600px;
             margin: 0 auto;
+            transition: color 0.3s ease;
         }
 
         .features {
@@ -333,7 +427,9 @@
             padding: 2rem;
             border-radius: 0.5rem;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        background-color 0.5s ease;
         }
 
         .feature-card:hover {
@@ -352,6 +448,11 @@
             margin-bottom: 1.5rem;
             color: var(--primary);
             font-size: 1.5rem;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(10deg) scale(1.1);
         }
 
         .feature-card h3 {
@@ -365,9 +466,24 @@
             padding: 2rem;
             border-radius: 0.5rem;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+        }
+
+        .fact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(107, 70, 193, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .fact-card:hover::before {
+            left: 100%;
         }
 
         .fact-card:hover {
@@ -387,6 +503,12 @@
             object-fit: cover;
             border-radius: 0.25rem;
             margin-bottom: 1rem;
+            transition: transform 0.7s ease, filter 0.7s ease;
+        }
+
+        .fact-card:hover img {
+            transform: scale(1.03);
+            filter: brightness(1.05);
         }
 
         .fact-card-source {
@@ -394,6 +516,7 @@
             color: #64748b;
             margin-top: 1rem;
             font-style: italic;
+            transition: color 0.3s ease;
         }
 
         /* Fact Categories */
@@ -433,6 +556,7 @@
 
         .testimonials {
             background-color: white;
+            transition: background-color 0.5s ease;
         }
 
         .testimonial-cards {
@@ -446,6 +570,12 @@
             padding: 2rem;
             border-radius: 0.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         .testimonial-header {
@@ -479,6 +609,10 @@
             background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
         }
 
+        .dark-mode .contact {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+        }
+
         .contact-form {
             max-width: 600px;
             margin: 0 auto;
@@ -486,6 +620,12 @@
             padding: 2rem;
             border-radius: 0.5rem;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .contact-form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .form-group {
@@ -506,6 +646,14 @@
             border: 1px solid #e2e8f0;
             border-radius: 0.25rem;
             font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.2);
+            outline: none;
         }
 
         .form-group textarea {
@@ -547,6 +695,7 @@
 
         .footer-links a:hover {
             color: white;
+            transform: translateY(-2px);
         }
 
         .social-links {
@@ -564,11 +713,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .social-link:hover {
             background-color: var(--primary);
+            transform: scale(1.1) rotate(10deg);
         }
 
         .copyright {
@@ -583,9 +733,10 @@
             left: 0;
             width: 100%;
             background-color: white;
-            padding: 1rem ;
+            padding: 1rem;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
             z-index: 999;
+            transition: all 0.3s ease;
         }
 
         .mobile-menu.active {
@@ -598,6 +749,12 @@
             text-decoration: none;
             color: var(--dark);
             border-bottom: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--primary);
+            padding-left: 1rem;
         }
 
         @media (max-width: 768px) {
@@ -626,7 +783,8 @@
                 margin-left: 0;
             }
 
-            .sidebar-toggle {
+            .sidebar-toggle,
+            .dark-mode-toggle {
                 display: none;
             }
         }
@@ -640,6 +798,23 @@
             
             .btn-primary {
                 margin-right: 0;
+            }
+
+            .fact-categories {
+                gap: 0.5rem;
+            }
+
+            .category-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .facts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-cards {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -666,7 +841,7 @@
             color: var(--primary);
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeIn 0.8s ease forwards 0.3s;
+            animation: fadeIn 1s ease forwards 0.1s;
         }
         .welcome-message {
             font-size: 1.5rem;
@@ -675,7 +850,7 @@
             margin-bottom: 3rem;
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeIn 0.8s ease forwards 0.5s;
+            animation: fadeIn 1.2s ease forwards 0.3s;
         }
         .welcome-button {
             background: var(--primary);
@@ -685,12 +860,13 @@
             font-weight: 600;
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeIn 0.8s ease forwards 0.7s;
-            transition: all 0.3s ease;
+            animation: fadeIn 1.4s ease forwards 0.5s;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .welcome-button:hover {
             background: #4338ca;
-            transform: scale(1.05);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(107, 70, 193, 0.4);
         }
 
         /* Animations */
@@ -699,8 +875,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
         .animate {
-            animation: fadeIn 0.5s ease forwards;
+            animation: fadeIn 0.7s ease forwards;
         }
 
         .delay-1 {
@@ -730,7 +912,8 @@
         .dynamic-content.active {
             display: block;
         }
-                .quiz-restart {
+
+        .quiz-restart {
             display: inline-block;
             padding: 0.8rem 1.8rem;
             background: var(--primary);
@@ -739,9 +922,8 @@
             text-decoration: none;
             margin-top: 1rem;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
-               /* Previous CSS styles remain unchanged */
-        /* ... */
 
         /* Quiz Modal Styles */
         .quiz-modal {
@@ -757,7 +939,11 @@
             z-index: 2000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s ease;
+        }
+
+        .dark-mode .quiz-modal {
+            background-color: rgba(0,0,0,0.9);
         }
 
         .quiz-modal.active {
@@ -775,6 +961,12 @@
             padding: 2rem;
             position: relative;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+        }
+
+        .dark-mode .quiz-container {
+            background-color: var(--dark-card);
+            color: var(--dark-text);
         }
 
         .quiz-header {
@@ -796,11 +988,15 @@
             overflow: hidden;
         }
 
+        .dark-mode .quiz-progress {
+            background-color: #334155;
+        }
+
         .quiz-progress-bar {
             height: 100%;
             background-color: var(--primary);
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.5s ease;
         }
 
         .question-container {
@@ -812,6 +1008,10 @@
             margin-bottom: 1.5rem;
             font-weight: 600;
             color: var(--dark);
+        }
+
+        .dark-mode .question-text {
+            color: var(--dark-text);
         }
 
         .options-container {
@@ -827,7 +1027,13 @@
             background-color: white;
             text-align: left;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .option-btn {
+            background-color: var(--dark-card);
+            border-color: #334155;
+            color: var(--dark-text);
         }
 
         .option-btn:hover {
@@ -862,6 +1068,10 @@
             color: var(--dark);
         }
 
+        .dark-mode .quiz-score {
+            color: var(--dark-text);
+        }
+
         .quiz-nav-btn {
             padding: 0.7rem 1.5rem;
             background-color: var(--primary);
@@ -890,6 +1100,11 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: #64748b;
+            transition: color 0.3s ease;
+        }
+
+        .quiz-close-btn:hover {
+            color: var(--primary);
         }
 
         .quiz-results {
@@ -915,6 +1130,11 @@
             margin: 0 auto 2rem;
             border: 10px solid;
             border-color: var(--primary);
+            transition: all 0.5s ease;
+        }
+
+        .dark-mode .quiz-score-circle {
+            background-color: #1e293b;
         }
 
         .quiz-score-text {
@@ -926,14 +1146,12 @@
         .quiz-feedback {
             margin-bottom: 2rem;
         }
-
-        /* Previous CSS styles continue below */
-        /* ... */
     </style>
 </head>
 <body>
     <!-- Welcome Screen -->
     <div class="welcome-screen">
+        <span class="material-icons" aria-hidden="true">rocket_launch</span>
         <div class="welcome-logo">Cosmic Discoveries</div>
         <div class="welcome-message">Explore the wonders of our universe with fascinating space facts and scientific discoveries.</div>
         <button class="welcome-button">Enter Site</button>
@@ -971,6 +1189,10 @@
                 <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
+    </div>
+    <!-- Dark Mode Toggle Button -->
+    <div class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
     </div>
 
     <!-- Sidebar Toggle Button -->
@@ -1073,6 +1295,30 @@
                 welcomeScreen.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }, 500);
+        });
+               // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        let darkMode = localStorage.getItem('darkMode') === 'enabled';
+
+        // Apply dark mode if previously enabled
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            darkMode = !darkMode;
+            
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                document.body.classList.remove('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('darkMode', 'disabled');
+            }
         });
 
         // Sidebar functionality
@@ -1236,42 +1482,100 @@
                 </div>
             `,
             'missions': `
-                <div class="section-title animate">
-                    <h2>Famous Space Missions</h2>
-                    <p>Explore humanity's greatest journeys beyond Earth</p>
+     <div class="section-title animate">
+        <h2>Famous Space Missions</h2>
+        <p>Explore humanity's greatest journeys beyond Earth</p>
+    </div>
+    <div class="testimonial-cards">
+        <div class="testimonial-card animate delay-1">
+            <div class="testimonial-header">
+ 
+                <div class="testimonial-name">
+                    <h4>Apollo 11</h4>
+                    <p>First Moon Landing: 1969</p>
                 </div>
-                <div class="testimonial-cards">
-                    <div class="testimonial-card animate delay-1">
-                        <div class="testimonial-header">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f3cd8ab2-d26b-41ec-b5ad-7b5920812271.png" alt="Professional headshot of smiling middle-aged businesswoman with blond hair" class="testimonial-avatar" />
-                            <div class="testimonial-name">
-                                <h4>Apollo 11</h4>
-                                <p>First Moon Landing</p>
-                            </div>
-                        </div>
-                        <p>"On July 20, 1969, Neil Armstrong and Buzz Aldrin became the first humans to land on the Moon as part of NASA's Apollo program."</p>
-                    </div>
-                    <div class="testimonial-card animate delay-2">
-                        <div class="testimonial-header">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/16adaee9-3018-40fa-8578-4ee7f71f73e6.png" alt="Portrait of young black entrepreneur wearing glasses and business casual attire" class="testimonial-avatar" />
-                            <div class="testimonial-name">
-                                <h4>Voyager</h4>
-                                <p>Interstellar Mission</p>
-                            </div>
-                        </div>
-                        <p>"Launched in 1977, the Voyager probes are the most distant human-made objects, having entered interstellar space carrying the Golden Record."</p>
-                    </div>
-                    <div class="testimonial-card animate delay-3">
-                        <div class="testimonial-header">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/739f6547-2a6c-4b84-877f-6dae8f217add.png" alt="Happy elderly businessman with grey hair and warm smile" class="testimonial-avatar" />
-                            <div class="testimonial-name">
-                                <h4>Mars Rovers</h4>
-                                <p>Exploring the Red Planet</p>
-                            </div>
-                        </div>
-                        <p>"NASA's Mars rovers, including Spirit, Opportunity, and Curiosity, have vastly expanded our knowledge of the Martian surface and potential for life."</p>
-                    </div>
+            </div>
+            <p>"The first crewed mission to land on the Moon. Neil Armstrong and Buzz Aldrin became the first humans to walk on the lunar surface while Michael Collins remained in orbit."</p>
+            <p class="fact-card-source">Key Achievement: 382 kg of lunar material collected</p>
+        </div>
+        <div class="testimonial-card animate delay-2">
+            <div class="testimonial-header">
+                
+                <div class="testimonial-name">
+                    <h4>Voyager Program</h4>
+                    <p>Interstellar Mission: 1977</p>
                 </div>
+            </div>
+            <p>"Twin spacecraft that explored the outer planets and are now in interstellar space. Voyager 1 is the most distant human-made object from Earth."</p>
+            <p class="fact-card-source">Current Distance: ~24 billion km from Earth</p>
+        </div>
+        <div class="testimonial-card animate delay-3">
+            <div class="testimonial-header">
+  
+                <div class="testimonial-name">
+                    <h4>Mars Science Laboratory</h4>
+                    <p>Curiosity Rover: 2012</p>
+                </div>
+            </div>
+            <p>"The largest rover sent to Mars. Has discovered evidence of past water activity and organic molecules, revolutionizing our understanding of Mars' habitability."</p>
+            <p class="fact-card-source">Key Finding: Ancient freshwater lake detected</p>
+        </div>
+        <div class="testimonial-card animate delay-1">
+            <div class="testimonial-header">
+ 
+                <div class="testimonial-name">
+                    <h4>Hubble Space Telescope</h4>
+                    <p>Orbital Observatory: 1990</p>
+                </div>
+            </div>
+            <p>"One of the most productive scientific instruments ever built. Hubble's observations have led to breakthroughs in astrophysics and produced iconic images of the cosmos."</p>
+            <p class="fact-card-source">Key Contribution: Accelerating universe discovery</p>
+        </div>
+        <div class="testimonial-card animate delay-2">
+            <div class="testimonial-header">
+
+                <div class="testimonial-name">
+                    <h4>ISS</h4>
+                    <p>International Space Station: 1998</p>
+                </div>
+            </div>
+            <p>"The largest human-made body in low Earth orbit. A joint project between five space agencies representing 15 countries for scientific research in microgravity."</p>
+            <p class="fact-card-source">Fact: Orbits Earth every 90 minutes</p>
+        </div>
+        <div class="testimonial-card animate delay-3">
+            <div class="testimonial-header">
+ 
+                <div class="testimonial-name">
+                    <h4>Cassini-Huygens</h4>
+                    <p>Saturn Mission: 1997-2017</p>
+                </div>
+            </div>
+            <p>"The first spacecraft to orbit Saturn, studying the planet, its rings, and moons. The Huygens probe made the first landing on Titan, Saturns largest moon."</p>
+            <p class="fact-card-source">Discovery: Enceladus' subsurface ocean</p>
+        </div>
+        <div class="testimonial-card animate delay-1">
+            <div class="testimonial-header">
+
+                <div class="testimonial-name">
+                    <h4>New Horizons</h4>
+                    <p>Pluto Flyby: 2015</p>
+                </div>
+            </div>
+            <p>"The first spacecraft to explore Pluto, revealing its complex geology and atmosphere. Later flew by Arrokoth, providing insights about solar system formation."</p>
+            <p class="fact-card-source">Key Finding: Pluto's nitrogen ice plains</p>
+        </div>
+        <div class="testimonial-card animate delay-2">
+            <div class="testimonial-header">
+ 
+                <div class="testimonial-name">
+                    <h4>Parker Solar Probe</h4>
+                    <p>Solar Mission: 2018</p>
+                </div>
+            </div>
+            <p>"The first spacecraft to fly through the Sun's corona, studying solar wind and coronal heating. Holds records for fastest human-made object and closest approach to the Sun."</p>
+            <p class="fact-card-source">Achievement: Withstands 1,370°C temperatures</p>
+        </div>
+    </div>
             `
         };
 
