@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Planet Explorer</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        
+        #canvas-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        
+        #planet-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 300px;
+        }
+        
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        h2 {
+            margin-top: 0;
+            color: #4fc3f7;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <div id="controls">
+            <button id="prev-btn">Previous</button>
+            <button id="next-btn">Next</button>
+        </div>
+        <div id="planet-info">
+            <h2 id="planet-title">Planet Explorer</h2>
+            <p id="planet-desc">Use the buttons to explore planets in our solar system</p>
+            <div id="planet-stats"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').prepend(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 3, 5);
+        scene.add(directionalLight);
+
+        // Planets data
+        const planets = [
+            {
+                name: "Mercury",
+                size: 0.4,
+                color: 0xb5b5b5,
+                description: "The smallest planet in our solar system and closest to the Sun.",
+                stats: {
+                    "Diameter": "4,880 km",
+                    "Distance from Sun": "57.9 million km",
+                    "Orbital Period": "88 Earth days"
+                }
+            },
+            {
+                name: "Venus",
+                size: 0.6,
+                color: 0xe6c229,
+                description: "Similar in size to Earth, Venus is the hottest planet in our solar system.",
+                stats: {
+                    "Diameter": "12,104 km",
+                    "Distance from Sun": "108.2 million km",
+                    "Orbital Period": "225 Earth days"
+                }
+            },
+            {
+                name: "Earth",
+                size: 0.6,
+                color: 0x1a75ff,
+                description: "Our home planet is the only known place in the universe confirmed to host life.",
+                stats: {
+                    "Diameter": "12,742 km",
+                    "Distance from Sun": "149.6 million km",
+                    "Orbital Period": "365.25 days"
+                }
+            },
+            {
+                name: "Mars",
+                size: 0.5,
+                color: 0xc1440e,
+                description: "The Red Planet is a dusty, cold desert world with a very thin atmosphere.",
+                stats: {
+                    "Diameter": "6,779 km",
+                    "Distance from Sun": "227.9 million km",
+                    "Orbital Period": "687 Earth days"
+                }
+            },
+            {
+                name: "Jupiter",
+                size: 1.2,
+                color: 0xe3dccb,
+                description: "The largest planet in our solar system, a gas giant with a Great Red Spot.",
+                stats: {
+                    "Diameter": "139,820 km",
+                    "Distance from Sun": "778.5 million km",
+                    "Orbital Period": "12 Earth years"
+                }
+            },
+            {
+                name: "Saturn",
+                size: 1.0,
+                color: 0xf5e3b3,
+                description: "Famous for its beautiful ring system made of ice and rock particles.",
+                stats: {
+                    "Diameter": "116,460 km",
+                    "Distance from Sun": "1.4 billion km",
+                    "Orbital Period": "29 Earth years"
+                }
+            },
+            {
+                name: "Uranus",
+                size: 0.8,
+                color: 0xb5e3e3,
+                description: "An ice giant that rotates on its side, with rings and a blue-green color.",
+                stats: {
+                    "Diameter": "50,724 km",
+                    "Distance from Sun": "2.9 billion km",
+                    "Orbital Period": "84 Earth years"
+                }
+            },
+            {
+                name: "Neptune",
+                size: 0.8,
+                color: 0x5b5ddf,
+                description: "The windiest planet with the strongest winds in the solar system.",
+                stats: {
+                    "Diameter": "49,244 km",
+                    "Distance from Sun": "4.5 billion km",
+                    "Orbital Period": "165 Earth years"
+                }
+            }
+        ];
+
+        // Current planet
+        let currentPlanetIndex = -1;
+        let currentPlanet = null;
+
+        // Camera position
+        camera.position.z = 3;
+
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (currentPlanet) {
+                currentPlanet.rotation.y += 0.005;
+            }
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Create planet
+        function createPlanet(index) {
+            // Remove previous planet
+            if (currentPlanet) {
+                scene.remove(currentPlanet);
+            }
+            
+            const planetData = planets[index];
+            
+            // Create new planet
+            const geometry = new THREE.SphereGeometry(planetData.size, 32, 32);
+            const material = new THREE.MeshPhongMaterial({ 
+                color: planetData.color,
+                specular: 0x111111,
+                shininess: 30
+            });
+            
+            currentPlanet = new THREE.Mesh(geometry, material);
+            scene.add(currentPlanet);
+            
+            // Update UI
+            document.getElementById('planet-title').textContent = planetData.name;
+            document.getElementById('planet-desc').textContent = planetData.description;
+            
+            const statsContainer = document.getElementById('planet-stats');
+            statsContainer.innerHTML = '';
+            
+            for (const [key, value] of Object.entries(planetData.stats)) {
+                const statElement = document.createElement('p');
+                statElement.innerHTML = `<strong>${key}:</strong> ${value}`;
+                statsContainer.appendChild(statElement);
+            }
+            
+            // Update current index
+            currentPlanetIndex = index;
+            
+            // Update button states
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === planets.length - 1;
+        }
+
+        // Event listeners
+        document.getElementById('next-btn').addEventListener('click', () => {
+            if (currentPlanetIndex < planets.length - 1) {
+                createPlanet(currentPlanetIndex + 1);
+            }
+        });
+        
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            if (currentPlanetIndex > 0) {
+                createPlanet(currentPlanetIndex - 1);
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Start with first planet
+        createPlanet(0);
+    </script>
+</body>
+</html>

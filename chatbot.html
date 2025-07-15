@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Discoveries - Chat AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --light: #f0f5f9;
+            --dark: #0d1117;
+            --space-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0d1117 100%);
+        }
+        
+        body {
+            background: var(--space-gradient);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            color: var(--highlight);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        nav a:hover, nav a.active {
+            color: var(--highlight);
+        }
+        
+        nav a.active:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--highlight);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: left 0.4s ease;
+            padding: 20px;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+        }
+        
+        .sidebar.open {
+            left: 0;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--light);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: var(--highlight);
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--light);
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-nav a:hover {
+            background: rgba(15, 52, 96, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .sidebar-nav a.active {
+            background: var(--accent);
+            color: var(--highlight);
+        }
+        
+        .sidebar-nav i {
+            width: 24px;
+            text-align: center;
+        }
+        
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent);
+            color: var(--light);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .sidebar-toggle:hover {
+            background: var(--highlight);
+            transform: scale(1.05);
+        }
+        
+        /* Main Content */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 50px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f0f5f9, #e94560);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .feature-card {
+            background: rgba(22, 33, 62, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: rgba(22, 33, 62, 0.8);
+        }
+        
+        .feature-card i {
+            font-size: 48px;
+            color: var(--highlight);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card p {
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        
+        /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .chatbot {
+            width: 350px;
+            height: 500px;
+            background: rgba(22, 33, 62, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .chatbot.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .chat-header {
+            background: var(--accent);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chat-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .chat-header i {
+            color: var(--highlight);
+        }
+        
+        .close-chat {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-chat:hover {
+            color: var(--highlight);
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            background: var(--accent);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .bot-message {
+            background: rgba(15, 52, 96, 0.6);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: rgba(15, 52, 96, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .chat-input button {
+            background: var(--highlight);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .chat-input button:hover {
+            background: #c52d46;
+        }
+        
+        .chat-input i {
+            color: var(--light);
+            font-size: 18px;
+        }
+        
+        .chat-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--highlight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            transition: all 0.3s;
+        }
+        
+        .chat-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #c9d1d9;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .chatbot {
+                width: 90vw;
+                height: 70vh;
+                bottom: 80px;
+                right: 5vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-rocket"></i> Cosmic Discoveries</h2>
+            <button class="close-btn" id="closeSidebar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#"><i class="fas fa-home"></i> Home</a>
+            <a href="#"><i class="fas fa-info-circle"></i> About</a>
+            <a href="#"><i class="fas fa-image"></i> Gallery</a>
+            <a href="#"><i class="fas fa-blog"></i> Blog</a>
+            <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="#" class="active" id="chatAILink"><i class="fas fa-robot"></i> Chat AI</a>
+        </nav>
+    </div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <a href="#" class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>Cosmic Discoveries</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Explore the Wonders of the Universe</h1>
+            <p>Discover the mysteries of space, distant galaxies, black holes, and the origins of the cosmos through our immersive platform.</p>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="features">
+            <div class="feature-card">
+                <i class="fas fa-star"></i>
+                <h3>Stellar Phenomena</h3>
+                <p>Learn about the life cycle of stars, from nebulae to supernovae, and understand the forces that shape our universe.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-globe-americas"></i>
+                <h3>Exoplanets</h3>
+                <p>Discover planets beyond our solar system and explore the possibility of extraterrestrial life in distant worlds.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-satellite"></i>
+                <h3>Space Exploration</h3>
+                <p>Follow the latest missions, space technologies, and humanity's journey to explore the final frontier.</p>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2023 Cosmic Discoveries. All rights reserved. | Explore the Cosmos</p>
+        </footer>
+    </div>
+    
+    <!-- Chat Icon -->
+    <div class="chat-icon" id="chatIcon">
+        <i class="fas fa-robot"></i>
+    </div>
+    
+    <!-- Chatbot Container -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot" id="chatbot">
+            <div class="chat-header">
+                <h3><i class="fas fa-robot"></i> Space Assistant</h3>
+                <button class="close-chat" id="closeChat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Hello! I'm your Space Assistant. How can I help you explore the cosmos today?
+                </div>
+                <div class="message bot-message">
+                    You can ask me about stars, planets, galaxies, space missions, or any cosmic phenomena!
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Ask about space...">
+                <button id="sendMessage">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const chatAILink = document.getElementById('chatAILink');
+        const chatIcon = document.getElementById('chatIcon');
+        const chatbotContainer = document.getElementById('chatbotContainer');
+        const chatbot = document.getElementById('chatbot');
+        const closeChat = document.getElementById('closeChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendMessage = document.getElementById('sendMessage');
+        
+        // Toggle sidebar
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.add('open');
+        });
+        
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+        });
+        
+        // Open chatbot from sidebar link
+        chatAILink.addEventListener('click', (e) => {
+            e.preventDefault();
+            sidebar.classList.remove('open');
+            openChatbot();
+        });
+        
+        // Open chatbot from chat icon
+        chatIcon.addEventListener('click', openChatbot);
+        
+        // Close chatbot
+        closeChat.addEventListener('click', () => {
+            chatbot.classList.remove('open');
+            setTimeout(() => {
+                chatbotContainer.style.display = 'none';
+            }, 300);
+        });
+        
+        // Send message
+        sendMessage.addEventListener('click', processMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                processMessage();
+            }
+        });
+        
+        // Function to open chatbot
+        function openChatbot() {
+            chatbotContainer.style.display = 'block';
+            setTimeout(() => {
+                chatbot.classList.add('open');
+            }, 10);
+        }
+        
+        // Function to process user message
+        function processMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            
+            // Add user message to chat
+            addMessage(message, 'user');
+            userInput.value = '';
+            
+            // Simulate bot thanking
+            setTimeout(() => {
+                const botResponse = generateBotResponse(message);
+                addMessage(botResponse, 'bot');
+            }, 1000);
+        }
+        
+        // Function to add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender + '-message');
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Function to generate bot response
+        function generateBotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Sample responses based on keywords
+            if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                return "Hello there! Ready to explore the cosmos?";
+            } else if (lowerMessage.includes('black hole')) {
+                return "A black hole is a region of spacetime where gravity is so strong that nothing—no particles or even electromagnetic radiation such as light—can escape from it. They form when massive stars collapse at the end of their life cycle.";
+            } else if (lowerMessage.includes('star') || lowerMessage.includes('stars')) {
+                return "Stars are massive celestial bodies made mostly of hydrogen and helium that produce light and heat from nuclear fusion in their cores. Our Sun is the closest star to Earth.";
+            } else if (lowerMessage.includes('planet') || lowerMessage.includes('planets')) {
+                return "Planets are celestial bodies that orbit a star, are massive enough to be rounded by their own gravity, and have cleared their orbit of other debris. Our solar system has eight planets.";
+            } else if (lowerMessage.includes('galaxy') || lowerMessage.includes('galaxies')) {
+                return "A galaxy is a gravitationally bound system of stars, stellar remnants, interstellar gas, dust, and dark matter. The Milky Way is our home galaxy, containing our solar system.";
+            } else if (lowerMessage.includes('mission') || lowerMessage.includes('missions')) {
+                return "Notable space missions include Apollo (Moon landings), Voyager (outer planets), Hubble Space Telescope (deep space imaging), and James Webb Space Telescope (infrared astronomy).";
+            } else if (lowerMessage.includes('earth')) {
+                return "Earth is the third planet from the Sun and the only known astronomical object to harbor life. It's about 4.5 billion years old and has a diameter of approximately 12,742 km.";
+            } else if (lowerMessage.includes('moon')) {
+                return "The Moon is Earth's only natural satellite. It's about 1/6th the size of Earth and orbits our planet every 27.3 days. The Moon influences ocean tides and stabilizes Earth's axial tilt.";
+            } else if (lowerMessage.includes('sun')) {
+                return "The Sun is the star at the center of our solar system. It's a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field. It's about 4.6 billion years old.";
+            } else if (lowerMessage.includes('help')) {
+                return "I can answer questions about space, astronomy, planets, stars, galaxies, black holes, and space missions. Try asking about any of these topics!";
+            } else if (lowerMessage.includes('thank')) {
+                return "You're welcome! Feel free to ask more about the cosmos anytime.";
+            } else {
+                // Default responses
+                const randomResponses = [
+                    "That's an interesting question about space! Could you rephrase or ask about something more specific?",
+                    "I'm designed to answer questions about astronomy and space exploration. Try asking about planets, stars, or galaxies!",
+                    "The universe is full of wonders! Ask me about black holes, exoplanets, or the Big Bang theory.",
+                    "I'm still learning about the cosmos. Could you ask about something else?",
+                    "Space is fascinating! Try asking about the Milky Way, the Solar System, or NASA missions."
+                ];
+                return randomResponses[Math.floor(Math.random() * randomResponses.length)];
+            }
+        }
+        
+        // Initialize with a welcome message
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                addMessage("Welcome to Cosmic Discoveries! I'm here to help you explore the universe.", 'bot');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

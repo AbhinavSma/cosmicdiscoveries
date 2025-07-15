@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Challenge | Advanced</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Orbitron', 'Arial', sans-serif;
+        }
+        
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #uiOverlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 18px;
+            pointer-events: none;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #0088ff;
+            z-index: 100;
+        }
+        
+        .ui-panel {
+            background: rgba(0, 0, 30, 0.6);
+            border: 1px solid #4a00e0;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(5px);
+        }
+        
+        #startScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0,0,50,0.9) 0%, rgba(0,0,0,0.95) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 200;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .title {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #8e2de2, #4a00e0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(142, 45, 226, 0.5);
+            animation: pulse 2s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { text-shadow: 0 0 10px rgba(142, 45, 226, 0.5); }
+            to { text-shadow: 0 0 30px rgba(142, 45, 226, 0.8), 0 0 50px rgba(74, 0, 224, 0.5); }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        #startButton {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #4a00e0, #8e2de2);
+            border: none;
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(142, 45, 226, 0.5);
+        }
+        
+        #startButton:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(142, 45, 226, 0.8);
+        }
+        
+        #gameOverScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(50,0,0,0.9) 0%, rgba(0,0,0,0.95) 100%);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 200;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .powerup-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .powerup-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            background: rgba(0, 0, 30, 0.6);
+            border: 1px solid #4a00e0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(74, 0, 224, 0.5);
+        }
+        
+        .powerup-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform-origin: bottom;
+        }
+        
+        #pauseScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 30, 0.7);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 150;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .controls {
+            margin-top: 30px;
+            background: rgba(0, 0, 30, 0.6);
+            border: 1px solid #4a00e0;
+            border-radius: 5px;
+            padding: 20px;
+            max-width: 500px;
+        }
+        
+        .controls h3 {
+            margin-top: 0;
+            color: #8e2de2;
+        }
+        
+        .controls ul {
+            padding-left: 20px;
+        }
+        
+        .controls li {
+            margin-bottom: 10px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        
+        <div id="uiOverlay">
+            <div class="ui-panel">
+                <div>SCORE: <span id="score">0</span></div>
+                <div>LEVEL: <span id="level">1</span></div>
+                <div>HEALTH: <span id="health">100</span>%</div>
+            </div>
+            <div class="powerup-indicator" id="powerupIndicator"></div>
+        </div>
+        
+        <div id="startScreen">
+            <h1 class="title">GALAXY CHALLENGE</h1>
+            <p class="subtitle">Defend the galaxy from invading forces in this intense space battle. Navigate through asteroid fields, collect power-ups, and survive as long as you can!</p>
+            <div class="controls">
+                <h3>CONTROLS:</h3>
+                <ul>
+                    <li>Arrow Keys: Move your ship</li>
+                    <li>Space: Fire weapons</li>
+                    <li>P: Pause game</li>
+                </ul>
+            </div>
+            <button id="startButton">ENGAGE</button>
+        </div>
+        
+        <div id="gameOverScreen">
+            <h1 class="title">MISSION FAILED</h1>
+            <div class="ui-panel" style="text-align: center;">
+                <p>YOUR SCORE: <span id="finalScore">0</span></p>
+                <p>LEVEL REACHED: <span id="finalLevel">1</span></p>
+            </div>
+            <button id="restartButton">RETRY</button>
+        </div>
+        
+        <div id="pauseScreen">
+            <h1 class="title">GAME PAUSED</h1>
+            <button id="resumeButton">RESUME</button>
+        </div>
+    </div>
+
+    <script src="https://pixijs.download/v7.3.0/pixi.min.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

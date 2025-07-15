@@ -184,14 +184,17 @@
                         <div class="feature-icon">🚀</div>
                         <h3>Planet Explorer</h3>
                         <p>Fly through our solar system and discover interesting facts about each planet.</p>
-                        <button class="btn btn-primary" style="margin-top:1rem">Play Now</button>
+  <button onclick="document.location='index;.html'" class="btn btn-primary" style="margin-top:1rem">Play Game</button>
                     </div>
                     <div class="feature-card animate delay-2">
                         <div class="feature-icon">⭐</div>
                         <h3>Constellation Hunter</h3>
-                        <p>Connect the stars to reveal famous constellations from different cultures.</p>
-                        <button class="btn btn-primary" style="margin-top:1rem">Play Now</button>
+                        <p>Destroy the enemies using you spaceship</p>
+
+<button onclick="document.location='index_huntergame.html'" class="btn btn-primary" style="margin-top:1rem">Play Game</button>
+                        
                     </div>
+
                 </div>
             `,
             'missions': `
@@ -289,6 +292,84 @@
             <p class="fact-card-source">Achievement: Withstands 1,370°C temperatures</p>
         </div>
     </div>
+            `,
+            'spacebooks': `
+     <div class="section-title animate">
+        <h2>Famous Space Books</h2>
+        <p>Explore humanity's greatest journeys beyond Earth</p>
+    </div>
+    <div class="testimonial-cards">
+        <div class="testimonial-card animate delay-1">
+            <div class="testimonial-header">
+ 
+                <div class="testimonial-name">
+                    <h4>The Apollo of Aeronautics: NASA’s Aircraft Energy Efficiency Program, 1973-1987</h4>
+                    <p></p>
+                     <button onclick="document.location='601247main_ApolloAeronautics-ebook.pdf'" class="btn btn-primary" style="margin-top:1rem">Read Book</button>
+                </div>
+            </div>
+            <p></p>
+
+        </div>
+        <div class="testimonial-card animate delay-2">
+            <div class="testimonial-header">
+                
+                <div class="testimonial-name">
+                    <h4>50 Years of Solar System Exploration</h4>
+                     <button onclick="document.location='50-years-of-solar-system-exploration_tagged.pdf'" class="btn btn-primary" style="margin-top:1rem">Read Book</button>
+
+                </div>
+            </div>
+            <p></p>
+
+        </div>
+        <div class="testimonial-card animate delay-3">
+            <div class="testimonial-header">
+  
+                <div class="testimonial-name">
+                    <h4>Governing the Moon</h4>
+                      <button onclick="document.location='governing-the-moon-sp-2024-4559-ebook.pdf'" class="btn btn-primary" style="margin-top:1rem">Read Book</button>
+
+                </div>
+            </div>
+    
+
+        </div>
+        <div class="testimonial-card animate delay-1">
+            <div class="testimonial-header">
+ 
+                <div class="testimonial-name">
+                    <h4>Cosmos and Culture</h4>
+                     <button onclick="document.location='sp-4802.pdf'" class="btn btn-primary" style="margin-top:1rem">Read Book</button>
+                    <p></p>
+                </div>
+            </div>
+        
+
+        </div>
+        <div class="testimonial-card animate delay-2">
+            <div class="testimonial-header">
+
+                <div class="testimonial-name">
+                    <h4>ISRO - Genesis and Journey</h4>
+                     <button onclick="document.location='01_ISRO_Genesis_and_Journey_Nagendra.pdf'" class="btn btn-primary" style="margin-top:1rem">Read Book</button>
+<p></p>
+                </div>
+            </div>
+           
+
+        </div>
+        <div class="testimonial-card animate delay-3">
+            <div class="testimonial-header">
+ 
+                <div class="testimonial-name">
+                    <h4>Dr. Vikram Sarabhai</h4>
+                       <button onclick="document.location='03_Dr.Vikram Sarabhai_Priyanka.pdf'" class="btn btn-primary" style="margin-top:1rem">Read Book</button>
+       <p></p>
+                </div>
+            </div>
+           
+      
             `
         };
 
