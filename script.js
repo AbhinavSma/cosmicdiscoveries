@@ -564,60 +564,6 @@
                 question: "Which dwarf planet was once considered the ninth planet?",
                 options: ["Eris", "Ceres", "Pluto", "Makemake"],
                 correctAnswer: 2
-            },
-            {
-                question: "What is the hottest planet in our solar system?",
-                options: ["Mercury", "Venus", "Earth", "Mars"],
-                correctAnswer: 1,
-                explanation: "Venus is hotter than Mercury due to its thick atmosphere trapping heat."
-            },
-            {
-                question: "Which planet has the most moons?",
-                options: ["Jupiter", "Saturn", "Uranus", "Neptune"],
-                correctAnswer: 1,
-                explanation: "Saturn currently has over 140 confirmed moons."
-            },
-            {
-                question: "What is Mars' largest volcano called?",
-                options: ["Mount Everest", "Olympus Mons", "Mauna Kea", "Elysium Mons"],
-                correctAnswer: 1
-            },
-            {
-                question: "Which planet has the fastest winds in the solar system?",
-                options: ["Jupiter", "Saturn", "Neptune", "Uranus"],
-                correctAnswer: 2,
-                explanation: "Neptune's winds can reach speeds of up to 1,200 mph (2,000 km/h)."
-            },
-            {
-                question: "What is the age of our solar system?",
-                options: ["4.6 million years", "56 million years", "2.1 billion years", "4.6 billion years"],
-                correctAnswer: 3
-            },
-            {
-                question: "Which planet has the shortest year?",
-                options: ["Mercury", "Venus", "Mars", "Jupiter"],
-                correctAnswer: 0
-            },
-            {
-                question: "What percentage of the solar system's mass is contained in the Sun?",
-                options: ["25%", "50%", "75%", "99.8%"],
-                correctAnswer: 3
-            },
-            {
-                question: "Which planet has a hexagonal storm at its north pole?",
-                options: ["Jupiter", "Saturn", "Uranus", "Neptune"],
-                correctAnswer: 1
-            },
-            {
-                question: "What is the name of Jupiter's largest moon?",
-                options: ["Io", "Europa", "Ganymede", "Callisto"],
-                correctAnswer: 2,
-                explanation: "Ganymede is larger than the planet Mercury."
-            },
-            {
-                question: "Which planet has the most circular orbit?",
-                options: ["Earth", "Mars", "Venus", "Neptune"],
-                correctAnswer: 2
             }
         ];
 
