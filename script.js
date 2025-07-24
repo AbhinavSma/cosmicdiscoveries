@@ -513,56 +513,59 @@
 
         // Enhanced quiz questions
         const solarSystemQuizQuestions = [
+           
             {
-                question: "Which planet is known as the 'Red Planet'?",
-                options: ["Venus", "Mars", "Jupiter", "Saturn"],
-                correctAnswer: 1
-            },
-            {
-                question: "What is the largest planet in our solar system?",
-                options: ["Earth", "Mars", "Jupiter", "Saturn"],
-                correctAnswer: 2
-            },
-            {
-                question: "Which planet has the most extreme temperature variations?",
-                options: ["Mercury", "Venus", "Earth", "Mars"],
-                correctAnswer: 0
-            },
-            {
-                question: "How many moons does Jupiter have?",
-                options: ["4", "12", "67", "95+"],
-                correctAnswer: 3,
-                explanation: "As of 2023, Jupiter has at least 95 known moons, with more likely to be discovered."
-            },
-            {
-                question: "What is the Great Red Spot on Jupiter?",
-                options: ["A massive volcano", "A giant storm", "A deep crater", "A frozen lake"],
-                correctAnswer: 1
-            },
-            {
-                question: "Which planet rotates on its side?",
-                options: ["Venus", "Neptune", "Uranus", "Pluto"],
-                correctAnswer: 2
-            },
-            {
-                question: "What is Saturn's largest moon?",
-                options: ["Titan", "Europa", "Ganymede", "Callisto"],
-                correctAnswer: 0
-            },
-            {
-                question: "Which planet has the longest day?",
+                question: "What is the hottest planet in our solar system?",
                 options: ["Mercury", "Venus", "Earth", "Mars"],
                 correctAnswer: 1,
-                explanation: "Venus has a retrograde rotation with a day longer than its year."
+                explanation: "Venus is hotter than Mercury due to its thick atmosphere trapping heat."
             },
             {
-                question: "What causes Neptune's blue color?",
-                options: ["Water oceans", "Methane in atmosphere", "Reflected sunlight", "Molten diamonds"],
+                question: "Which planet has the most moons?",
+                options: ["Jupiter", "Saturn", "Uranus", "Neptune"],
+                correctAnswer: 1,
+                explanation: "Saturn currently has over 140 confirmed moons."
+            },
+            {
+                question: "What is Mars' largest volcano called?",
+                options: ["Mount Everest", "Olympus Mons", "Mauna Kea", "Elysium Mons"],
                 correctAnswer: 1
             },
             {
-                question: "Which dwarf planet was once considered the ninth planet?",
-                options: ["Eris", "Ceres", "Pluto", "Makemake"],
+                question: "Which planet has the fastest winds in the solar system?",
+                options: ["Jupiter", "Saturn", "Neptune", "Uranus"],
+                correctAnswer: 2,
+                explanation: "Neptune's winds can reach speeds of up to 1,200 mph (2,000 km/h)."
+            },
+            {
+                question: "What is the age of our solar system?",
+                options: ["4.6 million years", "56 million years", "2.1 billion years", "4.6 billion years"],
+                correctAnswer: 3
+            },
+            {
+                question: "Which planet has the shortest year?",
+                options: ["Mercury", "Venus", "Mars", "Jupiter"],
+                correctAnswer: 0
+            },
+            {
+                question: "What percentage of the solar system's mass is contained in the Sun?",
+                options: ["25%", "50%", "75%", "99.8%"],
+                correctAnswer: 3
+            },
+            {
+                question: "Which planet has a hexagonal storm at its north pole?",
+                options: ["Jupiter", "Saturn", "Uranus", "Neptune"],
+                correctAnswer: 1
+            },
+            {
+                question: "What is the name of Jupiter's largest moon?",
+                options: ["Io", "Europa", "Ganymede", "Callisto"],
+                correctAnswer: 2,
+                explanation: "Ganymede is larger than the planet Mercury."
+            },
+            {
+                question: "Which planet has the most circular orbit?",
+                options: ["Earth", "Mars", "Venus", "Neptune"],
                 correctAnswer: 2
             }
         ];
